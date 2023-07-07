@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "987554654265",
+    "project_id": "crickzcard-4b8f5",
+    "storage_bucket": "crickzcard-4b8f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987554654265:android:83dbd06f7ff8b45ca8c5e8",
+        "android_client_info": {
+          "package_name": "com.example.crickz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987554654265-phkr4npkc9egbibto2jtn01gsnfuu2pl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgP61Ri0EmwUhal8MaGwov7yMN4n-X8MY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987554654265-phkr4npkc9egbibto2jtn01gsnfuu2pl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
