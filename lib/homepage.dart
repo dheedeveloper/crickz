@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
 
+
+
+
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
 
@@ -51,13 +54,13 @@ class _HomepageState extends State<Homepage> {
                         child: TextField(
                           cursorWidth: 0.w,
                           textAlign: TextAlign.center,
-                          style:const TextStyle(
+                          style:const TextStyle(fontFamily: "regular",
                               color: Colors.black, fontWeight: FontWeight.w500),
                           keyboardType: TextInputType.number,
                           controller: overs,
                           decoration: InputDecoration(
                               hintText: "Overs",
-                              hintStyle: const TextStyle(
+                              hintStyle: const TextStyle(fontFamily: "regular",
                                   color: Colors.black, fontWeight: FontWeight.w500),
                               filled: true,
                               fillColor: Colors.white70,
@@ -79,6 +82,7 @@ class _HomepageState extends State<Homepage> {
                               fixedSize: Size(40.h, 40.h),
                               shape: const CircleBorder()),
                           onPressed: () {
+                            // Share.share("Deena");
                             Navigator.pushReplacement(
                                 context,
                                 PageTransition(
@@ -99,13 +103,13 @@ class _HomepageState extends State<Homepage> {
                     child: TextField(
                       cursorWidth: 0.w,
                       textAlign: TextAlign.center,
-                      style:const TextStyle(
+                      style:const TextStyle(fontFamily: "regular",
                           color: Colors.black, fontWeight: FontWeight.w500),
                       cursorColor: Colors.black,
                       controller: battingteam,
                       decoration: InputDecoration(
                           hintText: "Batters",
-                          hintStyle: const TextStyle(
+                          hintStyle: const TextStyle(fontFamily: "regular",
                               color: Colors.black, fontWeight: FontWeight.w500),
                           filled: true,
                           fillColor: Colors.white70,
@@ -129,12 +133,12 @@ class _HomepageState extends State<Homepage> {
                     child: TextField(
                       cursorWidth: 0.w,
                       textAlign: TextAlign.center,
-                      style:const TextStyle(
+                      style:const TextStyle(fontFamily: "regular",
                           color: Colors.black, fontWeight: FontWeight.w500),
                       controller: bowlingteam,
                       decoration: InputDecoration(
                           hintText: "Bowlers",
-                          hintStyle: const TextStyle(
+                          hintStyle: const TextStyle(fontFamily: "regular",
                               color: Colors.black, fontWeight: FontWeight.w500),
                           filled: true,
                           fillColor: Colors.white70,
@@ -175,7 +179,7 @@ class _HomepageState extends State<Homepage> {
 // controller: overs,
 // decoration: InputDecoration(
 // labelText: "Overs",
-// labelStyle: const TextStyle(
+// labelStyle: const TextStyle(fontFamily: "regular",
 // color: Colors.black, fontWeight: FontWeight.w500),
 // filled: true,
 // fillColor: Colors.white70,

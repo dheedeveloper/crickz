@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'main.dart';
 
 class WinningScreen extends StatefulWidget {
@@ -32,27 +31,27 @@ class _WinningScreenState extends State<WinningScreen> {
             ),
             child: Column(mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              Text(widget.won, style: TextStyle(
+              Text(widget.won, style: TextStyle(fontFamily: "regular",
                   fontSize: 27.sp,
                   color: Colors.black,
                   fontWeight: FontWeight.w700),),
               SizedBox(height:10.h),
-              Text("Beats", style: TextStyle(
+              Text("Beats", style: TextStyle(fontFamily: "regular",
                   fontSize: 20.sp,
                   color: Colors.black,
                   fontWeight: FontWeight.w700)),
                 SizedBox(height:10.h),
-              Text(widget.lose, style: TextStyle(
+              Text(widget.lose, style: TextStyle(fontFamily: "regular",
                   fontSize: 27.sp,
                   color: Colors.black,
                   fontWeight: FontWeight.w700),),
                 SizedBox(height:10.h),
-                Text("By", style: TextStyle(
+                Text("By", style: TextStyle(fontFamily: "regular",
                     fontSize: 20.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w700)),
                 SizedBox(height:10.h),
-                Text(widget.by.toString(), style: TextStyle(
+                Text(widget.by.toString(), style: TextStyle(fontFamily: "regular",
                     fontSize: 20.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w700)),

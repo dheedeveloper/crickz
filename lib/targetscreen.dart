@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:io';
-
 import 'package:crickz/winningscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,18 +20,18 @@ class TargetScreen extends StatefulWidget {
 }
 
 class _TargetScreenState extends State<TargetScreen> {
-  var targetfixedover;
-  var targetruns;
+  var runs;
+  var fixedovrs;
 
   @override
   void initState() {
-    targetfixedover=widget.overs.toString();
+    fixedovrs = widget.overs.toString();
     super.initState();
   }
 
-  List targetovercount = [];
-  List targetextras = [];
-  List targetsummary = [
+  List overcount = [];
+  List extras = [];
+  List summary = [
     0,
     1,
     2,
@@ -42,10 +42,10 @@ class _TargetScreenState extends State<TargetScreen> {
     "W+1",
     "W+2",
   ];
-  List targetballscount = [];
-  List targetthisover = [];
+  List ballscount = [];
+  List thisover = [];
   List target = [];
-  List targetwicket = [];
+  List wicket = [];
 
   popUp() {
     showDialog(
@@ -54,7 +54,7 @@ class _TargetScreenState extends State<TargetScreen> {
         return AlertDialog(
           content: Text(
             'You want to exit?',
-            style: TextStyle(
+            style: TextStyle(fontFamily: "regular",
                 fontSize: 20.sp,
                 color: Colors.black,
                 fontWeight: FontWeight.w500),
@@ -66,7 +66,7 @@ class _TargetScreenState extends State<TargetScreen> {
                 },
                 child: Text(
                   "Yes",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: "regular",
                       fontSize: 18.sp,
                       color: Colors.blue,
                       fontWeight: FontWeight.w500),
@@ -77,7 +77,7 @@ class _TargetScreenState extends State<TargetScreen> {
                 },
                 child: Text(
                   "No",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: "regular",
                       fontSize: 18.sp,
                       color: Colors.blue,
                       fontWeight: FontWeight.w500),
@@ -96,40 +96,46 @@ class _TargetScreenState extends State<TargetScreen> {
   }
   int ballcount() {
     int sum = 0;
-    for (int count in targetballscount) {
+    for (int count in ballscount) {
       sum += count;
     }
     return sum;
   }
-  int targetoverscount() {
-    int sum = 0;
-    for (int count in targetovercount) {
-      sum += count;
-    }
-    return sum;
-  }
+  String total ="";
   won(){
-    if(totaltargetsummary()>=widget.target ||
-        targetfixedover==targetoverscount().toString()){
-      Navigator.push(context,
-          PageTransition(
-              child:  WinningScreen(
-                won: widget.bat,
-                lose: widget.bowl,
-                by:targetwicket.isEmpty? "10 wickets": "${10 - targetwicket.length} wickets",
-              ),
-              type: PageTransitionType.bottomToTop));
+    if(totaltargetsummary() == widget.target || totaltargetsummary() > widget.target){
+      print("Chasing Win");
+       Navigator.push(context,
+           PageTransition(
+               child:  WinningScreen(
+                 won: widget.bat,
+                 lose: widget.bowl,
+                 by:wicket.isEmpty? "10 wickets": "${10 - wicket.length} wickets",
+               ),
+               type: PageTransitionType.bottomToTop));
     }
   }
+
   lose(){
-    if( targetwicket.length==9 ||
-        targetfixedover==targetoverscount().toString()){
+    if(fixedovrs == overcount.length.toString()){
+        Timer(const Duration( milliseconds:300), () {
+          Navigator.push(context,
+              PageTransition(
+                  child:  WinningScreen(
+                      won: widget.bowl,
+                      lose: widget.bat,
+                      by: "${widget.target-totaltargetsummary()} runs"
+                  ),
+                  type: PageTransitionType.bottomToTop));
+        });
+    }
+    else if(wicket.length ==9){
       Navigator.push(context,
           PageTransition(
               child:  WinningScreen(
-                won: widget.bowl,
-                lose: widget.bat,
-                by: "${widget.target-totaltargetsummary()} runs"
+                  won: widget.bowl,
+                  lose: widget.bat,
+                  by: "${widget.target-totaltargetsummary()} runs"
               ),
               type: PageTransitionType.bottomToTop));
     }
@@ -137,12 +143,14 @@ class _TargetScreenState extends State<TargetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("$targetfixedover==${targetoverscount().toString()}");
+    print("${totaltargetsummary()} >= ${widget.target}");
+    print("Wicket${wicket.length}==${10}");
+    print("Overs${overcount.length}==${widget.overs}");
     if (ballcount() == 6) {
-      targetballscount.clear();
-      targetovercount.add(1);
+      ballscount.clear();
+      overcount.add(1);
     }
-    targetruns=totaltargetsummary() + targetextras.length;
+    runs=totaltargetsummary() + extras.length;
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -165,22 +173,22 @@ class _TargetScreenState extends State<TargetScreen> {
                         children: [
                           Text(
                             "${widget.bat}",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 23.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                           const Spacer(),
                           Text(
-                            "${totaltargetsummary() + targetextras.length} /",
-                            style: TextStyle(
+                            "${totaltargetsummary()} /",
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 35.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                           Text(
-                            "${targetwicket.length.toString() ?? 0}",
-                            style: TextStyle(
+                            "${wicket.length.toString() ?? 0}",
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 25.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
@@ -194,15 +202,16 @@ class _TargetScreenState extends State<TargetScreen> {
                         children: [
                           Text(
                             "${widget.bowl}",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 23.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                           const Spacer(),
                           Text(
-                            "${targetoverscount()}.${ballcount()} / ${widget.overs}",
+                            "${overcount.length.toString()}.${ballcount()} / ${widget.overs.toString()}",
                             style: TextStyle(
+                                fontFamily: "regular",
                                 fontSize: 22.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
@@ -211,30 +220,25 @@ class _TargetScreenState extends State<TargetScreen> {
                             "  ov",
                             style: TextStyle(
                                 fontSize: 15.sp,
+                                fontFamily: "regular",
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 60.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Text(
-                          //   "Extras: ${targetextras.length}",
-                          //   style: TextStyle(
-                          //       fontSize: 20.sp,
-                          //       color: Colors.black,
-                          //       fontWeight: FontWeight.w500),
-                          // ),
-                           Spacer(),
-                          Text(
+                           const Spacer(),
+                           Text(
                             "TARGET ~ ${widget.target}",
                             style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontFamily: "regular",
+                                color: Colors.blue.shade600,
                                 fontWeight: FontWeight.w500),
                           ),
                           //SizedBox(width: 4.w,)
@@ -258,7 +262,7 @@ class _TargetScreenState extends State<TargetScreen> {
                   child: Column(children: [
                     Text(
                       "THIS OVER",
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: "regular",
                           fontSize: 17.sp,
                           color: Colors.black,
                           fontWeight: FontWeight.w700),
@@ -280,7 +284,7 @@ class _TargetScreenState extends State<TargetScreen> {
                       ),
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: targetthisover.length,
+                          itemCount: thisover.length,
                           itemBuilder: (context, index) {
                             return Container(
                               height: 50.h,
@@ -288,13 +292,13 @@ class _TargetScreenState extends State<TargetScreen> {
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(),
-                                  color: targetthisover[index] == "W"
+                                  color:thisover[index] == "W"
                                       ? Colors.red.shade300
                                       : Colors.white70),
                               child: Center(
                                 child: Text(
-                                  targetthisover[index].toString(),
-                                  style: TextStyle(
+                                  thisover[index].toString(),
+                                  style: TextStyle(fontFamily: "regular",
                                       fontSize: 16.sp,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
@@ -316,45 +320,44 @@ class _TargetScreenState extends State<TargetScreen> {
                               childAspectRatio: 5 / 2,
                               crossAxisSpacing: 20,
                               mainAxisSpacing: 20),
-                          itemCount: targetsummary.length,
+                          itemCount: summary.length,
                           itemBuilder: (context, index) {
-                            targetthisover.length == 6 ? targetthisover.clear() : null;
+                            if(thisover.length==6){
+                              thisover.clear();
+                            }
                             return InkWell(
                               onTap: () {
+                                ballscount.add(1);
                                 if (index <= 5) {
-                                  target.add(targetsummary[index]);
-                                  targetthisover.add(targetsummary[index]);
-                                  targetballscount.add(1);
-                                } else {
+                                  target.add(summary[index]);
+                                  thisover.add(summary[index]);
+                                }
+                                else {
                                   null;
                                 }
                                 setState(() {
-                                  won();
-                                  lose();
                                   if (ballcount() == 6) {
-                                    targetballscount.clear();
-                                    targetovercount.add(1);
+                                    ballscount.clear();
+                                    overcount.add(1);
                                   }
-                                  if (targetsummary[index] == "W") {
-                                    targetwicket.add(1);
+                                  if (summary[index] == "W") {
+                                    wicket.add(1);
                                     target.add(0);
-                                    targetthisover.add("W");
-                                    targetballscount.add(1);
+                                    thisover.add("W");
                                   }
-                                  if (targetsummary[index] == "W+1") {
-                                    targetwicket.add(1);
+                                  if (summary[index] == "W+1") {
+                                    wicket.add(1);
                                     target.add(1);
-                                    targetthisover.add("W+1");
-                                    targetballscount.add(1);
+                                    thisover.add("W+1");
                                   }
-                                  if (targetsummary[index] == "W+2") {
-                                    targetwicket.add(1);
+                                  if (summary[index] == "W+2") {
+                                    wicket.add(1);
                                     target.add(2);
-                                    targetthisover.add("W+2");
-                                    targetballscount.add(1);
+                                    thisover.add("W+2");
                                   }
-                                  print(targetthisover);
                                 });
+                                won();
+                                lose();
                               },
                               child: Container(
                                 height: 48.h,
@@ -365,8 +368,8 @@ class _TargetScreenState extends State<TargetScreen> {
                                     border: Border.all()),
                                 child: Center(
                                     child: Text(
-                                      targetsummary[index].toString(),
-                                      style: TextStyle(
+                                      summary[index].toString(),
+                                      style: TextStyle(fontFamily: "regular",
                                           fontSize: 20.sp,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500),
@@ -381,22 +384,22 @@ class _TargetScreenState extends State<TargetScreen> {
                         InkWell(
                           onTap: () {
                             setState(() {
-                              targetballscount.isNotEmpty
-                                  ? targetballscount.removeLast()
+                              ballscount.isNotEmpty
+                                  ? ballscount.removeLast()
                                   : snackBar();
                               target.isNotEmpty
                                   ? target.removeLast()
                                   : null;
-                              targetthisover.last == "W" ? targetwicket.removeLast() : null;
-                              targetthisover.last == "W+1" ? targetwicket.removeLast() : null;
-                              targetthisover.last == "W+2" ? targetwicket.removeLast() : null;
-                              print("last index > ${targetthisover.last}");
-                              if (targetthisover.isNotEmpty &&
-                                  targetthisover.last == "WD") {
-                                targetthisover.removeLast();
-                                targetextras.removeLast();
+                              thisover.last == "W" ? wicket.removeLast() : null;
+                              thisover.last == "W+1" ? wicket.removeLast() : null;
+                              thisover.last == "W+2" ? wicket.removeLast() : null;
+                              print("last index > ${thisover.last}");
+                              if (thisover.isNotEmpty &&
+                                  thisover.last == "WD") {
+                                thisover.removeLast();
+                                extras.removeLast();
                               } else {
-                                targetthisover.removeLast();
+                                thisover.removeLast();
                               }
                             });
                           },
@@ -410,7 +413,7 @@ class _TargetScreenState extends State<TargetScreen> {
                             child: Center(
                                 child: Text(
                                   "UNDO",
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: "regular",
                                       fontSize: 20.sp,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
@@ -436,7 +439,7 @@ class _TargetScreenState extends State<TargetScreen> {
                         //     child: Center(
                         //         child: Text(
                         //           "WIDE",
-                        //           style: TextStyle(
+                        //           style: TextStyle(fontFamily: "regular",
                         //               fontSize: 20.sp,
                         //               color: Colors.black,
                         //               fontWeight: FontWeight.w500),
@@ -464,7 +467,7 @@ class _TargetScreenState extends State<TargetScreen> {
             height: 26.h,
             child: Text(
               "Sorry, you can't edit previous overs",
-              style: TextStyle(
+              style: TextStyle(fontFamily: "regular",
                   fontSize: 20.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.w500),

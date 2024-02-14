@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:crickz/targetscreen.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,12 @@ class Scorecard extends StatefulWidget {
 
 class _ScorecardState extends State<Scorecard> {
 
-  var fixedover;
-  var runs;
+  String fixedover="";
+  int runs=0;
 
   @override
   void initState() {
-    fixedover=widget.overs.toString();
+    fixedover=widget.overs;
     super.initState();
   }
   List overcount = [];
@@ -45,15 +46,17 @@ class _ScorecardState extends State<Scorecard> {
   List score = [];
   List wicket = [];
   inningsEnd(){
-    if(fixedover==overscount().toString()){
-      Navigator.push(context,
-      PageTransition(
-      child: TargetScreen(
-        overs: widget.overs,
-        bat: widget.bowlingteam,
-        bowl: widget.battingteam,
-        target: runs+1,),
-    type: PageTransitionType.rightToLeft));
+    if(fixedover==overcount.length.toString()){
+     Timer(const Duration(milliseconds:300), () {
+       Navigator.push(context,
+           PageTransition(
+               child: TargetScreen(
+                 overs: fixedover,
+                 bat: widget.bowlingteam,
+                 bowl: widget.battingteam,
+                 target: runs+1,),
+               type: PageTransitionType.rightToLeft));
+     });
     }
   }
   popUp() {
@@ -63,7 +66,7 @@ class _ScorecardState extends State<Scorecard> {
         return AlertDialog(
           content: Text(
             'You want to exit?',
-            style: TextStyle(
+            style: TextStyle(fontFamily: "regular",
                 fontSize: 20.sp,
                 color: Colors.black,
                 fontWeight: FontWeight.w500),
@@ -75,7 +78,7 @@ class _ScorecardState extends State<Scorecard> {
                 },
                 child: Text(
                   "Yes",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: "regular",
                       fontSize: 18.sp,
                       color: Colors.blue,
                       fontWeight: FontWeight.w500),
@@ -86,7 +89,7 @@ class _ScorecardState extends State<Scorecard> {
                 },
                 child: Text(
                   "No",
-                  style: TextStyle(
+                  style: TextStyle(fontFamily: "regular",
                       fontSize: 18.sp,
                       color: Colors.blue,
                       fontWeight: FontWeight.w500),
@@ -106,13 +109,6 @@ class _ScorecardState extends State<Scorecard> {
   int ballcount() {
     int sum = 0;
     for (int count in ballscount) {
-      sum += count;
-    }
-    return sum;
-  }
-  int overscount() {
-    int sum = 0;
-    for (int count in overcount) {
       sum += count;
     }
     return sum;
@@ -151,7 +147,7 @@ class _ScorecardState extends State<Scorecard> {
                         children: [
                           Text(
                             "${widget.battingteam}",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 23.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
@@ -159,14 +155,14 @@ class _ScorecardState extends State<Scorecard> {
                           const Spacer(),
                           Text(
                             "$runs /",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 35.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                           Text(
                             "${wicket.length.toString() ?? 0}",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 25.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
@@ -180,22 +176,22 @@ class _ScorecardState extends State<Scorecard> {
                         children: [
                           Text(
                             "${widget.bowlingteam}",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 23.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                           const Spacer(),
                           Text(
-                            "${overscount()}.${ballcount()} / ${widget.overs}",
-                            style: TextStyle(
+                            "${overcount.length}.${ballcount()} / ${widget.overs}",
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 22.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
                           Text(
                             "  ov",
-                            style: TextStyle(
+                            style: TextStyle(fontFamily: "regular",
                                 fontSize: 15.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
@@ -204,7 +200,7 @@ class _ScorecardState extends State<Scorecard> {
                       ),
                       // Text(
                       //   "Extras: ${extras.length}",
-                      //   style: TextStyle(
+                      //   style: TextStyle(fontFamily: "regular",
                       //       fontSize: 20.sp,
                       //       color: Colors.black,
                       //       fontWeight: FontWeight.w500),
@@ -228,7 +224,7 @@ class _ScorecardState extends State<Scorecard> {
                   child: Column(children: [
                     Text(
                       "THIS OVER",
-                      style: TextStyle(
+                      style: TextStyle(fontFamily: "regular",
                           fontSize: 17.sp,
                           color: Colors.black,
                           fontWeight: FontWeight.w700),
@@ -252,7 +248,6 @@ class _ScorecardState extends State<Scorecard> {
                           scrollDirection: Axis.horizontal,
                           itemCount:  thisover.length,
                           itemBuilder: (context, index) {
-                            int reversedIndex = thisover.length - 1 - index;
                             return Container(
                               height: 50.h,
                               width: 50.w,
@@ -265,7 +260,7 @@ class _ScorecardState extends State<Scorecard> {
                               child: Center(
                                 child: Text(
                                   thisover[index].toString(),
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: "regular",
                                       fontSize: 16.sp,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
@@ -294,11 +289,12 @@ class _ScorecardState extends State<Scorecard> {
                             }
                             return InkWell(
                               onTap: () {
+                                ballscount.add(1);
                                 if (index <= 5) {
                                   score.add(summary[index]);
                                   thisover.add(summary[index]);
-                                  ballscount.add(1);
-                                } else {
+                                }
+                                else {
                                   null;
                                 }
                                 setState(() {
@@ -306,27 +302,23 @@ class _ScorecardState extends State<Scorecard> {
                                     ballscount.clear();
                                     overcount.add(1);
                                   }
-                                  inningsEnd();
                                   if (summary[index] == "W") {
                                     wicket.add(1);
                                     score.add(0);
                                     thisover.add("W");
-                                    ballscount.add(1);
                                   }
                                   if (summary[index] == "W+1") {
                                     wicket.add(1);
                                     score.add(1);
                                     thisover.add("W+1");
-                                    ballscount.add(1);
                                   }
                                   if (summary[index] == "W+2") {
                                     wicket.add(1);
                                     score.add(2);
                                     thisover.add("W+2");
-                                    ballscount.add(1);
                                   }
-                                  print(thisover);
                                 });
+                                inningsEnd();
                               },
                               child: Container(
                                 height: 48.h,
@@ -338,7 +330,7 @@ class _ScorecardState extends State<Scorecard> {
                                 child: Center(
                                     child: Text(
                                       summary[index].toString(),
-                                      style: TextStyle(
+                                      style: TextStyle(fontFamily: "regular",
                                           fontSize: 20.sp,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500),
@@ -382,41 +374,13 @@ class _ScorecardState extends State<Scorecard> {
                             child: Center(
                                 child: Text(
                                   "UNDO",
-                                  style: TextStyle(
+                                  style: TextStyle(fontFamily: "regular",
                                       fontSize: 20.sp,
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
                                 )),
                           ),
                         ),
-                       // InkWell(
-                        //   onTap: () {
-                        //     setState(() {
-                        //       print(thisover.length);
-                        //        thisover.add("WD");
-                        //        thisover.length-1;
-                        //       extras.add(1);
-                        //       score.add(0);
-                        //       ballscount.add(0);
-                        //     });
-                        //   },
-                        //   child: Container(
-                        //     height: 70.h,
-                        //     width: 70.h,
-                        //     decoration: BoxDecoration(
-                        //         color: const Color(0xff3CC0D2),
-                        //         shape: BoxShape.circle,
-                        //         border: Border.all()),
-                        //     child: Center(
-                        //         child: Text(
-                        //       "WIDE",
-                        //       style: TextStyle(
-                        //           fontSize: 20.sp,
-                        //           color: Colors.black,
-                        //           fontWeight: FontWeight.w500),
-                        //     )),
-                        //   ),
-                        // )
                       ],
                     )
                   ],),
@@ -438,7 +402,7 @@ class _ScorecardState extends State<Scorecard> {
             height: 26.h,
             child: Text(
               "Sorry, you can't edit previous overs",
-              style: TextStyle(
+              style: TextStyle(fontFamily: "regular",
                   fontSize: 20.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.w500),
