@@ -342,7 +342,7 @@ class _ScorecardState extends State<Scorecard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                       thisover.isEmpty ? const SizedBox() : InkWell(
+                       thisover.isEmpty || thisover.length==6 ? const SizedBox() : InkWell(
                           onTap: () {
                             setState(() {
                               ballscount.isNotEmpty
@@ -396,19 +396,21 @@ class _ScorecardState extends State<Scorecard> {
   snackBar() {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(seconds: 3),
-        width: 350.w,
+        duration: const Duration(seconds: 3),
+        width: 250.w,
         content: SizedBox(
-            height: 26.h,
-            child: Text(
-              "Sorry, you can't edit previous overs",
-              style: TextStyle(fontFamily: "regular",
-                  fontSize: 20.sp,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500),
+            height: 13.h,
+            child: Center(
+              child: Text(
+                "you can't edit previous overs",
+                style: TextStyle(fontFamily: "regular",
+                    fontSize: 10.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500),
+              ),
             )),
         behavior: SnackBarBehavior.floating,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)))));
+            borderRadius: BorderRadius.all(Radius.circular(8)))));
   }
 }

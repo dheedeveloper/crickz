@@ -115,9 +115,18 @@ class _TargetScreenState extends State<TargetScreen> {
                type: PageTransitionType.bottomToTop));
     }
   }
-
   lose(){
-    if(fixedovrs == overcount.length.toString()){
+    if(totaltargetsummary()==widget.target-1){
+      Timer(const Duration( milliseconds:300), () {
+        Navigator.push(context,
+            PageTransition(
+                child:  const WinningScreen(
+                   won: "",
+                ),
+                type: PageTransitionType.bottomToTop));
+      });
+    }
+    else if(fixedovrs == overcount.length.toString() && totaltargetsummary() < widget.target){
         Timer(const Duration( milliseconds:300), () {
           Navigator.push(context,
               PageTransition(
@@ -381,7 +390,7 @@ class _TargetScreenState extends State<TargetScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        InkWell(
+                        thisover.isEmpty || thisover.length==6 ? const SizedBox() :  InkWell(
                           onTap: () {
                             setState(() {
                               ballscount.isNotEmpty
@@ -451,7 +460,6 @@ class _TargetScreenState extends State<TargetScreen> {
                   ],),
                 ),
               ),
-
             ]),
           ),
         ),
@@ -462,18 +470,20 @@ class _TargetScreenState extends State<TargetScreen> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: const Duration(seconds: 3),
-        width: 350.w,
+        width: 250.w,
         content: SizedBox(
-            height: 26.h,
-            child: Text(
-              "Sorry, you can't edit previous overs",
-              style: TextStyle(fontFamily: "regular",
-                  fontSize: 20.sp,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500),
+            height: 13.h,
+            child: Center(
+              child: Text(
+                "Sorry, you can't edit previous overs",
+                style: TextStyle(fontFamily: "regular",
+                    fontSize: 10.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500),
+              ),
             )),
         behavior: SnackBarBehavior.floating,
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)))));
+            borderRadius: BorderRadius.all(Radius.circular(8)))));
   }
 }

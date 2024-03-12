@@ -41,8 +41,8 @@ class _HomepageState extends State<Homepage> {
               padding: EdgeInsets.all(15.h),
               height: 300.h,
               decoration: BoxDecoration(
-                  color: Colors.white70,
-                  border: Border.all(),
+                  color: Colors.teal.shade200,
+                  border: Border.all(width: 0.3.w),
                   borderRadius: BorderRadius.circular(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,17 +82,21 @@ class _HomepageState extends State<Homepage> {
                               fixedSize: Size(40.h, 40.h),
                               shape: const CircleBorder()),
                           onPressed: () {
-                            // Share.share("Deena");
-                            Navigator.pushReplacement(
-                                context,
-                                PageTransition(
-                                    child: Scorecard(
-                                        overs: overs.text.toString(),
-                                        bowlingteam: bowlingteam.text.toString(),
-                                        battingteam: battingteam.text.toString()),
-                                    type: PageTransitionType.rightToLeft));
+                            if(battingteam.text.isEmpty||bowlingteam.text.isEmpty||overs.text.isEmpty){
+                                     snackBar();
+                            }else{
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: Scorecard(
+                                          overs: overs.text.toString(),
+                                          bowlingteam: bowlingteam.text.toString(),
+                                          battingteam: battingteam.text.toString()),
+                                      type: PageTransitionType.rightToLeft));
+                            }
+
                           },
-                          child: const Icon(Icons.arrow_forward_ios_rounded))
+                          child: const Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,))
                     ],
                   ),
                   SizedBox(
@@ -164,48 +168,25 @@ class _HomepageState extends State<Homepage> {
       ),
     ));
   }
+  snackBar() {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 3),
+        width: 250.w,
+        content: SizedBox(
+            height: 13.h,
+            child: Center(
+              child: Text(
+                "ENTER DETAILS PROPERLY",
+                style: TextStyle(fontFamily: "regular",
+                    fontSize: 10.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500),
+              ),
+            )),
+        behavior: SnackBarBehavior.floating,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)))));
+  }
 }
 
-// showDialog(context: context, builder: (context) {
-// return  AlertDialog(
-// title:Column(
-// children: [
-// const Text("How many overs you want to playy?"),
-// SizedBox(
-// height: 33.h,width: 70.w,
-// child: TextField(
-// cursorColor: Colors.white,
-// autofocus: true,
-// controller: overs,
-// decoration: InputDecoration(
-// labelText: "Overs",
-// labelStyle: const TextStyle(fontFamily: "regular",
-// color: Colors.black, fontWeight: FontWeight.w500),
-// filled: true,
-// fillColor: Colors.white70,
-// enabledBorder: OutlineInputBorder(
-// borderSide: const BorderSide(color: Colors.black),
-// borderRadius: BorderRadius.circular(13)),
-// disabledBorder: OutlineInputBorder(
-// borderSide: const BorderSide(color: Colors.black),
-// borderRadius: BorderRadius.circular(13)),
-// border: OutlineInputBorder(
-// borderSide: const BorderSide(color: Colors.black),
-// borderRadius: BorderRadius.circular(10))),
-// ),
-// ),
-// ],
-// ),
-// actions: [
-// ElevatedButton(
-// style: ElevatedButton.styleFrom(
-// backgroundColor: Colors.red.shade300,
-// fixedSize: Size(40.h, 40.h),
-// shape: const CircleBorder()),
-// onPressed: () {
-//
-// },
-// child: const Icon(Icons.arrow_forward_ios_rounded))
-// ],
-// );
-// },);
